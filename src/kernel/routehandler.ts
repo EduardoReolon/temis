@@ -1,6 +1,6 @@
 import {routeContract, requestMethods, routeHandlerContract, routeImpContract, routeGroupContract,
   HttpContextContract, routeMethodImpContract} from '../contracts/requestsContracts';
-import {namedMiddlewares} from '../app/Middleware';
+import {namedMiddlewares} from './middlewares';
 
 function route({path, controller, method, routesSetings}: {
   path: string, controller: string | ((context: HttpContextContract) => Promise<any>),

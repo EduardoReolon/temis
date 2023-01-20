@@ -35,5 +35,7 @@ export interface logContract {
 
   setError (error: Error | string | {[key: string]: string | number} | number): this
 
+  finishLog(): this
+
   save(): Promise<unknown>
 }
