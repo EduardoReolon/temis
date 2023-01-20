@@ -1,7 +1,13 @@
-import Log from "../app/services/log";
+// import Log from "../app/services/log";
 import { logContract } from "../contracts/logsContract";
-import { filesHandler, headerContentTypes, headerKeys, HttpContextContract, httpRequestContract, httpResponseContract, newRequestContract, requestMethods, routeImpContract, routeMethodImpContract } from "../contracts/requestsContracts";
+import {
+  filesHandler, headerContentTypes, headerKeys, HttpContextContract,
+  httpRequestContract, httpResponseContract, newRequestContract,
+  requestMethods, routeImpContract, routeMethodImpContract
+} from "../contracts/requestsContracts";
 import Route from "./routehandler";
+import { env } from "./env";
+let Log: any;
 
 class HttpRequest implements httpRequestContract {
   contentType: headerContentTypes
@@ -126,7 +132,8 @@ export default class NewRequest implements newRequestContract {
   }
 
   async launch(): Promise<any> {
-    const log = new Log({route: this.path, method: this.method});
+    if (!Log) Log = (await import(`${env.appDir}/services/log`)).default;
+    const log = new Log({route: this.path, method: this.method}) as logContract;
 
     try {
       const pathArr = this.path.split('/').filter((str) => str);

@@ -3,7 +3,7 @@ import Helpers from "../Helpers";
 const fs = require('fs');
 
 export default class Log extends BaseLog {
-  async save() {
+  async save(skipNewLogOnError?: boolean) {
     try {
       this.finishLog();
 
@@ -17,10 +17,12 @@ export default class Log extends BaseLog {
         {flag: 'as+', force: true}, // creates files if doesn't exist
       );
     } catch (err) {
-      new Log({route: 'Error saving log'})
-        .setResponse({status: 0})
-        .setError(err as Error)
-        .save();
+      if (!skipNewLogOnError) {
+        new Log({route: 'Error saving log'})
+          .setResponse({status: 0})
+          .setError(err as Error)
+          .save(true);
+      }
     }
   }
 }

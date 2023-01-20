@@ -37,5 +37,5 @@ export interface logContract {
 
   finishLog(): this
 
-  save(): Promise<unknown>
+  save(skipNewLogOnError?: boolean): Promise<unknown>
 }

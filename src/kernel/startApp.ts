@@ -1,7 +1,6 @@
 import { headerContentTypes } from "../contracts/requestsContracts";
 import { loadMiddlewares } from "./middlewares";
-import { env, loadEnv } from "./env";
-const fs = require('fs');
+import { env, loadEnv, setEnvDir } from "./env";
 
 const express = require('express');
 const bodyParser = require('body-parser');
@@ -24,9 +23,16 @@ app.use(bodyParser.text({ type: 'text/plain' }))
 // for parsing multipart/form-data
 app.use(upload.any())
 
-export default async function ({filesMiddleware, startRoutes}:
-  {filesMiddleware: {name: string, path: string}[], startRoutes(): Promise<unknown>}) {
-  await loadEnv();
+export default async function ({envText, dir, filesMiddleware, startRoutes}:
+  {
+    envText(): Promise<string>,
+    dir: string,
+    filesMiddleware: {name: string, path: string}[],
+    startRoutes(): Promise<unknown>
+  }) {
+
+  setEnvDir(dir);
+  await loadEnv(envText);
   await loadMiddlewares(filesMiddleware);
   await startRoutes();
   const NewRequest = (await import('./newrequesthandler')).default;
