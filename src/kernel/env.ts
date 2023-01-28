@@ -1,3 +1,5 @@
+const fs = require('fs');
+
 const env: {
   [key: string]: string
   PORT: string,
@@ -18,9 +20,9 @@ function setEnvDir(dir: string) {
   env.appDir = `${dir}/app`;
 }
 
-async function loadEnv(fileText: () => Promise<string>) {
+async function loadEnv() {
   try {
-    (await fileText()).split(/\r\n|\n/).forEach((line: string) => {
+    fs.readFileSync(`${env.baseDir}/.env`, 'utf8').forEach((line: string) => {
       const content = line.replace(/#.*/g, '').trim();
 
       const pairs = content.split('=');

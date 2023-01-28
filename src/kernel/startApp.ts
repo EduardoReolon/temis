@@ -11,7 +11,7 @@ const app = express();
 app.use(bodyParser.urlencoded({ extended: false }))
 
 // parse various different custom JSON types as JSON
-app.use(bodyParser.json({ type: 'application/*+json' }))
+app.use(bodyParser.json())
 
 // parse some custom thing into a Buffer
 app.use(bodyParser.raw({ type: 'application/vnd.custom-type' }))
@@ -23,16 +23,15 @@ app.use(bodyParser.text({ type: 'text/plain' }))
 // for parsing multipart/form-data
 app.use(upload.any())
 
-export default async function ({envText, dir, filesMiddleware, startRoutes}:
+export default async function ({dir, filesMiddleware, startRoutes}:
   {
-    envText(): Promise<string>,
     dir: string,
     filesMiddleware: {name: string, path: string}[],
     startRoutes(): Promise<unknown>
   }) {
 
   setEnvDir(dir);
-  await loadEnv(envText);
+  await loadEnv();
   await loadMiddlewares(filesMiddleware);
   await startRoutes();
   const NewRequest = (await import('./newrequesthandler')).default;
@@ -47,7 +46,7 @@ export default async function ({envText, dir, filesMiddleware, startRoutes}:
       contentTypeParams: contentTypeArray[1] || '',
       path: req.path,
       body: req.body,
-      query: req.body,
+      query: req.query,
       files: req.files,
     }).launch();
   })

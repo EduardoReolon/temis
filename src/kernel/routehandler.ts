@@ -45,7 +45,7 @@ class RouteHandler implements routeHandlerContract {
     }).filter((m) => m.name).sort((a, b) => b.priority - a.priority); // descent order
 
     const implement = (obj: routeContract) => {
-      const fullPathArr= [...obj.prefixArr, ...obj.path.split('/')];
+      const fullPathArr= [...obj.prefixArr, ...obj.path.split('/')].filter((str) => str);
       const paramIndexSt = fullPathArr.findIndex((str) => str.startsWith(':'));
       const params: string[] = [];
       if (paramIndexSt > -1) {
@@ -130,8 +130,6 @@ class RouteHandler implements routeHandlerContract {
         return this;
       }
     };
-    contracts.forEach((contract) => {
-    });
     return obj;
   }
 
