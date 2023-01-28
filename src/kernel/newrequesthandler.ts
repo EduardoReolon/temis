@@ -10,12 +10,14 @@ import { env } from "./env";
 let Log: any;
 
 class HttpRequest implements httpRequestContract {
+  req: any;
   contentType: headerContentTypes
   body: any
   query: {[key: string]: string}
   filesArr: filesHandler
 
-  constructor({contentType, body, query, files}: {contentType: headerContentTypes, body: string, query: {[key: string]: any}, files: filesHandler}) {
+  constructor({req, contentType, body, query, files}: {req: any, contentType: headerContentTypes, body: string, query: {[key: string]: any}, files: filesHandler}) {
+    this.req = req;
     this.contentType = contentType;
     this.body = body;
     this.query = query;
@@ -31,6 +33,10 @@ class HttpRequest implements httpRequestContract {
 
   files(): filesHandler {
     return this.filesArr;
+  }
+
+  header(key: string) {
+    return this.req.headers[key] || '';
   }
 }
 
@@ -178,7 +184,7 @@ export default class NewRequest implements newRequestContract {
           files: this.files,
         },
         new HttpResponse(),
-        new HttpRequest({contentType: this.contentType, body: this.body, query: this.query, files: this.files}),
+        new HttpRequest({req: this.req, contentType: this.contentType, body: this.body, query: this.query, files: this.files}),
         log,
       );
       if (implement) implementToUse.params.forEach((key, indexK) => context.params[key] = params[indexK]);

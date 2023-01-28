@@ -55,12 +55,14 @@ export interface routeGroupContract {
 export type bodiesTypes = number | string | object;
 
 export interface httpRequestContract {
+  req: any
   contentType: headerContentTypes,
   body: any,
   query: {[key: string]: string}
   filesArr: filesHandler
   all(): {[key: string]: any}
   files(): filesHandler
+  header(key: string): string
 }
 
 export interface httpResponseContract {
