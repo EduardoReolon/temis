@@ -144,15 +144,15 @@ class RouteHandler implements routeHandlerContract {
   }
 
   put(path: string, controller: string | ((context: HttpContextContract) => Promise<any>)): routeContract {
-    return route({path, controller, method: 'POST', routesSetings: this.routesSetings});
+    return route({path, controller, method: 'PUT', routesSetings: this.routesSetings});
   }
 
   delete(path: string, controller: string | ((context: HttpContextContract) => Promise<any>)): routeContract {
-    return route({path, controller, method: 'POST', routesSetings: this.routesSetings});
+    return route({path, controller, method: 'DELETE', routesSetings: this.routesSetings});
   }
 
   patch(path: string, controller: string | ((context: HttpContextContract) => Promise<any>)): routeContract {
-    return route({path, controller, method: 'POST', routesSetings: this.routesSetings});
+    return route({path, controller, method: 'PATCH', routesSetings: this.routesSetings});
   }
 }
 
