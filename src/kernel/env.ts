@@ -22,7 +22,7 @@ function setEnvDir(dir: string) {
 
 async function loadEnv() {
   try {
-    fs.readFileSync(`${env.baseDir}/.env`, 'utf8').forEach((line: string) => {
+    fs.readFileSync(`${env.baseDir}/.env`, 'utf8').split(/\r\n|\n/).forEach((line: string) => {
       const content = line.replace(/#.*/g, '').trim();
 
       const pairs = content.split('=');
